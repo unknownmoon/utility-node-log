@@ -15,6 +15,20 @@ Log utility used in NodeJS environment.
 - Featuring parsing objects using `util.inspect` and coloured outputs;
 - Supporting NodeJS 6 and above.
 
+The currently supported log levels are
+
+| Level   | Description |
+| ------- | ----------- |
+| MUTE    | Avoid all outputs |
+| INFO    | Informational outputs |
+| LOG     | Generic logging, when enabled, the outputs of INFO will also be printed. |
+| WARN    | Warning, when enabled, the outputs of INFO and LOG will also be printed. |
+| ERROR   | Errors, when enabled, the outputs of INFO, LOG and WARN will also be printed |
+| DEBUG   | Debugging information, when enabled, the outputs of INFO, LOG, WARN and ERROR will also be printed |
+| VERBOSE | Anything, including the outputs of all of the other logging levels. |
+
+Set `LOG_${levelName}` environment variable to `true` to enable the given level, i.e. `LOG_DEBUG=true`;
+
 Basic unit test powered by [Mocha][mocha-link]/[Chai][chai-link]/[Sinon][sinon-link];
 
 __Table of Contents__
