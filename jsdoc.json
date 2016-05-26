@@ -12,7 +12,7 @@
     "plugins/summarize"
   ],
   "templates": {
-    "cleverLinks": false,
+    "cleverLinks": true,
     "monospaceLinks": true,
     "systemName": "Utility: NodeJS Log",
     "footer": "",
