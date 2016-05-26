@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Utility: NodeJS Log Source: constants.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.paper.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">Utility: NodeJS Log</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-constants.html">constants</a></li><li><a href="module-logger.html">logger</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-logger-Logger.html">logger~Logger</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+		<div class="col-sm-3 col-md-3">
+            <form class="navbar-form" role="search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: constants.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">/**
+ * Constants module.
+ *
+ * @module constants
+ */
+import chalk from 'chalk';
+import { getOpts } from 'utility-node-opts-parser';
+
+/**
+ * @summary Indicating if the environment support colours, powered by `supports-color` in `chalk`.
+ *
+ * @type {Boolean}
+ */
+export const IS_COLOURED = chalk.supportsColor;
+
+/**
+ * @summary The prefix of environment variable
+ *
+ * @default `LOG_`
+ *
+ * @type {String}
+ */
+const PREFIX = 'LOG_';
+
+/**
+ * @summary The supported log levels.
+ *
+ * @desc The currently supported log levels are
+ *
+ * | Level   | Description |
+ * | ------- | ----------- |
+ * | MUTE    | Avoid all outputs |
+ * | INFO    | Informational outputs |
+ * | LOG     | Generic logging, when enabled, the outputs of INFO will also be printed. |
+ * | WARN    | Warning, when enabled, the outputs of INFO and LOG will also be printed. |
+ * | ERROR   | Errors, when enabled, the outputs of INFO, LOG and WARN will also be printed |
+ * | DEBUG   | Debugging information, when enabled, the outputs of INFO, LOG, WARN and ERROR will also be printed |
+ * | VERBOSE | Anything, including the outputs of all of the other logging levels. |
+ *
+ * @constant
+ * @type {Array}
+ */
+const LOG_LEVELS = [ 'MUTE', 'VERBOSE', 'DEBUG', 'ERROR', 'WARN', 'LOG', 'INFO' ]; // strictly ordered, so that the previous one override the next one.
+
+// external opts in the arguments to start the application or from the environment variables
+// prefer to set in the environment variables
+const opts = getOpts( ...LOG_LEVELS.map( level => PREFIX + level )
+  .concat( `${ PREFIX }TIME_FMT` ) );
+
+
+/**
+ * @summary Function to generate the value of log value.
+ *
+ * @desc The result will be used to do logic operation.
+ *
+ * @callback logLvlValFn
+ *
+ * @param  {String} logLvl Log level such as `INFO`
+ *
+ * @return {Boolean}    The value of the log level should be, regardless the other log levels.
+ */
+
+/**
+ * @summary Generate log level switches, based on the given log level value calculate function and the pre-set log level override logic.
+ *
+ * @param  {logLvlValFn} logLvlValFn  Function to generate the value of log value.
+ *
+ * @return {Map}    Result map with data in `{ logLvl: Boolean }` format.
+ */
+export function genLogLevel( logLvlValFn ) {
+
+  let fn = ( ) => false;
+  const result = new Map( );
+
+  if ( typeof logLvlValFn === 'function' ) {
+    fn = logLvlValFn;
+  }
+
+  LOG_LEVELS.reduce( ( status, logLvl ) => {
+    let val = fn( logLvl );
+
+    if ( logLvl !== 'MUTE' ) {
+
+      // it's the other log levels
+
+      val = !status.result.get( 'MUTE' ) &amp;&amp; ( status.currentLvl || val );
+      status.currentLvl = val;
+    }
+
+    status.result.set( logLvl, val );
+
+    return status;
+  }, {
+    currentLvl: false,
+    result
+  } );
+
+  return result;
+}
+
+export const defaultLogLevels = genLogLevel( logLvl => _genericEnableStatus( opts, `${ PREFIX }${ logLvl }` ) );
+
+/**
+ * @summary The time format when logging.
+ *
+ * @desc This value can be set from environment variable `LOG_TIME_FMT`
+ *
+ * @default `'HH.mm.ss.SSS'`
+ *
+ * @type {String}
+ */
+export const OUT_TIME_FMT = opts.get( `${ PREFIX }TIME_FMT` ) || 'HH.mm.ss.SSS';
+
+/**
+ * @summary Generic function to check if a flag has been set to non-`false` value.
+ *
+ * @param  {Map} opts A map with items of `{ optName: value|null }` format.
+ * @param  {String} flag The flag to be verified
+ * @return {Boolean}    `true` when the flag is set and the value isn't `false`
+ */
+function _genericEnableStatus( opts, flag ) {
+  // if the flag is set and the value is not `false`.
+  // even CLI only have text, namely Boolean `false` will be `'false'`,
+  // still append the Boolean value check.
+  return opts.get( flag ) !== null &amp;&amp; opts.get( flag ) !== 'false' &amp;&amp; opts.get( flag ) !== false;
+}
+
+/**
+ * @summary Log level - Mute
+ *
+ * @desc If MUTE is `true`, the log using all of the logging APIs will not be printed to stdout.
+ *
+ * MUTE is `true` if LOG_MUTE is set in the environment variable and the value is not `false`.
+ *
+ * @type {Boolean}
+ */
+export const MUTE = defaultLogLevels.get( 'MUTE' );
+
+/**
+ * @summary Log level - Verbose
+ *
+ * @desc If VERBOSE is `true`, the log using the `verbose` APIs will be printed to stdout.
+ *
+ * The outputs of all of the other logging levels will be printed to stdout.
+ *
+ * VERBOSE is `true` if
+ *
+ * - MUTE is `false` and
+ * - VERBOSE is set in the environment variable and the value is not `false`
+ *
+ * @type {Boolean}
+ */
+export const VERBOSE = defaultLogLevels.get( 'VERBOSE' );
+
+/**
+ * @summary Log level - Debug
+ *
+ * @desc If DEBUG is `true`, the log using the `debug` APIs will be printed to stdout.
+ *
+ * The outputs of INFO, LOG, WARN and ERROR will also be printed.
+ *
+ * DEBUG is `true` if
+ *
+ * - MUTE is `false` and
+ * - and
+ *   - DEBUG is set in the environment variable and the value is not `false`
+ *   - or VERBOSE is `true`
+ *
+ * @type {Boolean}
+ */
+export const DEBUG = defaultLogLevels.get( 'DEBUG' );
+
+/**
+ * @summary Log level - Error
+ *
+ * @desc If ERROR is `true`, the log using the `error` API will be printed to stdout.
+ *
+ * The outputs of INFO, LOG and WARN will also be printed.
+ *
+ * ERROR is `true` if
+ *
+ * - MUTE is `false`
+ * - and
+ *   - ERROR is set in the environment variable and the value is not `false`
+ *   - or DEBUG is `true`
+ *   - or VERBOSE is `true`
+ *
+ * @type {Boolean}
+ */
+export const ERROR = defaultLogLevels.get( 'ERROR' );
+
+/**
+ * @summary Log level - Warn
+ *
+ * @desc If WARN is `true`, the log using the `warn` API will be printed to stdout.
+ *
+ * The outputs of INFO and LOG will also be printed.
+ *
+ * WARN is `true` if
+ *
+ * - MUTE is `false`
+ * - and
+ *   - WARN is set in the environment variable and the value is not `false`
+ *   - or ERROR is `true`
+ *   - or DEBUG is `true`
+ *   - or VERBOSE is `true`
+ *
+ * @type {Boolean}
+ */
+export const WARN = defaultLogLevels.get( 'WARN' );
+
+/**
+ * @summary Log level - Log
+ *
+ * @desc If LOG is `true`, the log using the `log` API will be printed to stdout.
+ *
+ * The outputs of INFO will also be printed.
+ *
+ * LOG is `true` if
+ *
+ * - MUTE is `false`
+ * - and
+ *   - LOG is set in the environment variable and the value is not `false`
+ *   - or WARN is `true`
+ *   - or ERROR is `true`
+ *   - or DEBUG is `true`
+ *   - or VERBOSE is `true`
+ *
+ * @type {Boolean}
+ */
+export const LOG = defaultLogLevels.get( 'LOG' );
+
+/**
+ * @summary Log level - Info
+ *
+ * @desc If INFO is `true`, the log using the `info` API will be printed to stdout.
+ *
+ * INFO is `true` if
+ *
+ * - MUTE is `false`
+ * - and
+ *   - INFO is set in the environment variable and the value is not `false`
+ *   - or LOG is `true`
+ *   - or WARN is `true`
+ *   - or ERROR is `true`
+ *   - or DEBUG is `true`
+ *   - or VERBOSE is `true`
+ *
+ * @type {Boolean}
+ */
+export const INFO = defaultLogLevels.get( 'INFO' );
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+<div class="modal fade" id="searchResults">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Search results</h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+
+<footer>
+
+
+	<span class="copyright">
+	Utility: NodeJS Log Copyright © 2016 The contributors to the project.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
+	
+		on ~02:23:52.677, Friday, 27th May 2016 +0800
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+<script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			var id = $( heading ).attr( "id" );
+			return id && id.replace(/\~/g, '-inner-').replace(/\./g, '-static-') || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		SearcherDisplay.init();
+	});
+</script>
+
+</body>
+</html>
