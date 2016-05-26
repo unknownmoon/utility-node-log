@@ -35,6 +35,12 @@ __Table of Contents__
 
 <!-- MarkdownTOC -->
 
+- [Basic Module Usages](#basic-module-usages)
+    - [Set log level programmatically](#set-log-level-programmatically)
+    - [Set time format programmatically](#set-time-format-programmatically)
+    - [Wrap a content with colour](#wrap-a-content-with-colour)
+    - [Change colour functions](#change-colour-functions)
+    - [Logging APIs](#logging-apis)
 - [Initialisation](#initialisation)
 - [Clean Up](#clean-up)
 - [Test](#test)
@@ -43,6 +49,95 @@ __Table of Contents__
 - [Release](#release)
 
 <!-- /MarkdownTOC -->
+
+<a name="basic-module-usages"></a>
+## Basic Module Usages
+
+<a name="set-log-level-programmatically"></a>
+### Set log level programmatically
+
+```javascript
+import {logger} from 'utility-node-log';
+
+// if muted
+logger.logLevel = 'MUTE';
+logger.log('anything'); // no outputs
+
+// if error
+logger.logLevel = 'ERROR';
+logger.log('anything'); // [<time>][LOG] anything
+logger.error('anything'); // [<time>][ERROR] anything 
+logger.debug('anything'); // no outputs
+```
+
+<a name="set-time-format-programmatically"></a>
+### Set time format programmatically
+
+```javascript
+import {logger} from 'utility-node-log';
+
+// will be used to feed `moment.format`
+logger.timeFormat = 'HH.mm.ss.SS';
+```
+
+<a name="wrap-a-content-with-colour"></a>
+### Wrap a content with colour
+
+```javascript
+import {logger} from 'utility-node-log';
+
+// used `chalk` colour functions to do the job
+const result = logger.highlight('something');
+// result: '<color-code>something<color-code>'
+
+```
+
+<a name="change-colour-functions"></a>
+### Change colour functions
+
+The currently supported colour cases are:
+
+- `highlight`
+- `time`
+- `info`
+- `warn`
+- `error`
+- `debug` - also used in `log` and `verbose` cases.
+- `help` - not in use
+
+```javascript
+import {logger} from 'utility-node-log';
+import chalk from 'chalk';
+
+// only the given functions will be overridden
+logger.colorMapping = new Map([
+    ['highlight', chalk.cyan],
+    ['time', chalk.gray]
+]);
+```
+
+<a name="logging-apis"></a>
+### Logging APIs
+
+```javascript
+import {logger} from 'utility-node-log';
+
+// similar to use `console.log`, but with `[<time>][<log level>]` wrapper and coloured.
+logger.info('anything'); // [<time>][INFO] anything
+logger.log('anything'); // [<time>][LOG] anything
+logger.warn('anything'); // [<time>][WARN] anything
+logger.error('anything'); // [<time>][ERROR] anything
+logger.debug('anything'); // [<time>][DEBUG] anything
+logger.verbose('anything'); // [<time>][VERBOSE] anything
+
+// -------
+
+logger.inspect({ a: 1 }); 
+// is the shorthand of
+logger.debug( require( 'util' )
+  .inspect( { a: 1 }, { depth: 7, colors: true } ) );
+
+```
 
 <a name="initialisation"></a>
 ## Initialisation
