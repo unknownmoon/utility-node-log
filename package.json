@@ -5,8 +5,8 @@
   "main": "dist/es2015-node/index.js",
   "scripts": {
     "lint": "eslint --fix index.js ./lib/**/*.js",
-    "test": "npm run clean-coverage; npm run lint; FORCE_COLOR=true babel-node node_modules/.bin/isparta cover --report text --report html _mocha -- --recursive --full-trace --es_staging --harmony --check-leaks --compilers js:babel-register -c -R spec ./test/**/*.spec.js | cat ",
-    "test-only": "FORCE_COLOR=true mocha --recursive --full-trace --es_staging --harmony --check-leaks --compilers js:babel-register -c -R spec ./test/**/*.spec.js",
+    "test": "npm run clean-coverage; npm run lint; LOG_DEBUG=true LOG_TIME_FMT=HH.mm.ss.SSSZZ FORCE_COLOR=true babel-node node_modules/.bin/isparta cover --report text --report html _mocha -- --recursive --full-trace --es_staging --harmony --check-leaks --compilers js:babel-register -c -R spec ./test/**/*.spec.js | cat ",
+    "test-only": "LOG_DEBUG=true LOG_TIME_FMT=HH.mm.ss.SSSZZ FORCE_COLOR=true mocha --recursive --full-trace --es_staging --harmony --check-leaks --compilers js:babel-register -c -R spec ./test/**/*.spec.js",
     "clean-coverage": "rm -rfv coverage/",
     "doc": "npm run clean-doc; jsdoc -c ./jsdoc.json; echo Documentation generated under ./jsdoc folder.",
     "clean-doc": "rm -rf jsdoc",
