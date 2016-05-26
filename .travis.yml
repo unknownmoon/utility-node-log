@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+  - "node"
+  - "6"
+  - "6.2.0"
+  - "6.1.0"
+  - "6.0.0"
+before_script:
+  - npm run lint
+script:
+  - npm run release
+branches:
+  only:
+    - master
+    - develop
