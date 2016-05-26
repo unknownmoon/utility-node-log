@@ -21,7 +21,7 @@
     "navType": "vertical",
     "theme": "paper",
     "linenums": true,
-    "collapseSymbols": true,
+    "collapseSymbols": false,
     "inverseNav": true,
     "outputSourceFiles": true,
     "outputSourcePath": true,
