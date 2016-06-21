@@ -3,7 +3,7 @@ import { spy, stub } from 'sinon';
 import moment from 'moment';
 import { logger } from '../index';
 
-describe( 'opts-parser', function ( ) {
+describe( 'logger', function ( ) {
 
   function invokeAllLogAPIs( ) {
 
