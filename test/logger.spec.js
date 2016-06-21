@@ -3,7 +3,7 @@ import { spy, stub } from 'sinon';
 import moment from 'moment';
 import { logger } from '../index';
 
-describe( 'opts-parser', function ( ) {
+describe( 'logger', function ( ) {
 
   function invokeAllLogAPIs( ) {
 
@@ -191,13 +191,12 @@ describe( 'opts-parser', function ( ) {
 
   it( 'Getter/Setter timeFormat', function ( ) {
 
-    const date = new Date( '2016-06-01T02:03:04.567+0800' );
     const origFmt = logger.timeFormat;
 
     logger.timeFormat = 'DHmsSSS';
     logger.timeFormat = 1; // this won't affect since only string will be assigned.
 
-    expect( moment( date )
+    expect( moment.utc( '2016-06-01T02:03:04.567Z' )
         .format( logger.timeFormat ) )
       .to.equal( '1234567' );
 
