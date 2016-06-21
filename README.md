@@ -55,6 +55,8 @@ __Table of Contents__
 <a name="basic-module-usages"></a>
 ## Basic Module Usages
 
+Detailed APIs please reference to the JSDoc. [Generate JSDoc Documentation](#generate-jsdoc-documentation)
+
 <a name="set-log-level-programmatically"></a>
 ### Set log level programmatically
 
