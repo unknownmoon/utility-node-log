@@ -9,6 +9,7 @@
 | Master | Develop |
 | ------ | ------- |
 | [![Build Status Master](https://travis-ci.org/unknownmoon/utility-node-log.svg?branch=master)](https://travis-ci.org/unknownmoon/utility-node-log) | [![Build Status Develop](https://travis-ci.org/unknownmoon/utility-node-log.svg?branch=develop)](https://travis-ci.org/unknownmoon/utility-node-log) |
+| [![Coverage Status](https://coveralls.io/repos/github/unknownmoon/utility-node-log/badge.svg?branch=master)](https://coveralls.io/github/unknownmoon/utility-node-log?branch=master) | [![Coverage Status](https://coveralls.io/repos/github/unknownmoon/utility-node-log/badge.svg?branch=develop)](https://coveralls.io/github/unknownmoon/utility-node-log?branch=develop) |
 
 Log utility used in NodeJS environment.
 
@@ -41,17 +42,20 @@ __Table of Contents__
     - [Wrap a content with colour](#wrap-a-content-with-colour)
     - [Change colour functions](#change-colour-functions)
     - [Logging APIs](#logging-apis)
-- [Initialisation](#initialisation)
-- [Clean Up](#clean-up)
-- [Test](#test)
-- [Build](#build)
-- [Generate JSDoc Documentation](#generate-jsdoc-documentation)
-- [Release](#release)
+- [Development](#development)
+    - [Initialisation](#initialisation)
+    - [Clean Up](#clean-up)
+    - [Test](#test)
+    - [Build](#build)
+    - [Generate JSDoc Documentation](#generate-jsdoc-documentation)
+    - [Release](#release)
 
 <!-- /MarkdownTOC -->
 
 <a name="basic-module-usages"></a>
 ## Basic Module Usages
+
+Detailed APIs please reference to the JSDoc. [Generate JSDoc Documentation](#generate-jsdoc-documentation)
 
 <a name="set-log-level-programmatically"></a>
 ### Set log level programmatically
@@ -139,8 +143,11 @@ logger.debug( require( 'util' )
 
 ```
 
+<a name="development"></a>
+## Development
+
 <a name="initialisation"></a>
-## Initialisation
+### Initialisation
 
 ```bash
 # Have Node ^6.0.0 & NPM ^3.8.6 installed
@@ -150,7 +157,7 @@ npm install
 ```
 
 <a name="clean-up"></a>
-## Clean Up
+### Clean Up
 
 ```bash
 # remove the built code, for now only the test result 
@@ -161,7 +168,7 @@ npm run reset
 ```
 
 <a name="test"></a>
-## Test
+### Test
 
 Coverage report can be found in `./coverage` folder.
 
@@ -170,7 +177,7 @@ npm test
 ```
 
 <a name="build"></a>
-## Build
+### Build
 
 The source code is written in ES2015, hence before NodeJS fully support ES2015, we need to build the code to `es2015-node` using [Babel][babel-link].
 
@@ -181,7 +188,7 @@ npm run build
 ```
 
 <a name="generate-jsdoc-documentation"></a>
-## Generate JSDoc Documentation
+### Generate JSDoc Documentation
 
 ```bash
 # generate the documentation
@@ -194,7 +201,7 @@ npm run serve-doc
 ```
 
 <a name="release"></a>
-## Release
+### Release
 
 Shorthand script to generate release content, including `./coverage`, `./jsdoc` and `./dist`.
 
