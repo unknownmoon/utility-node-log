@@ -42,12 +42,13 @@ __Table of Contents__
     - [Wrap a content with colour](#wrap-a-content-with-colour)
     - [Change colour functions](#change-colour-functions)
     - [Logging APIs](#logging-apis)
-- [Initialisation](#initialisation)
-- [Clean Up](#clean-up)
-- [Test](#test)
-- [Build](#build)
-- [Generate JSDoc Documentation](#generate-jsdoc-documentation)
-- [Release](#release)
+- [Development](#development)
+    - [Initialisation](#initialisation)
+    - [Clean Up](#clean-up)
+    - [Test](#test)
+    - [Build](#build)
+    - [Generate JSDoc Documentation](#generate-jsdoc-documentation)
+    - [Release](#release)
 
 <!-- /MarkdownTOC -->
 
@@ -140,8 +141,11 @@ logger.debug( require( 'util' )
 
 ```
 
+<a name="development"></a>
+## Development
+
 <a name="initialisation"></a>
-## Initialisation
+### Initialisation
 
 ```bash
 # Have Node ^6.0.0 & NPM ^3.8.6 installed
@@ -151,7 +155,7 @@ npm install
 ```
 
 <a name="clean-up"></a>
-## Clean Up
+### Clean Up
 
 ```bash
 # remove the built code, for now only the test result 
@@ -162,7 +166,7 @@ npm run reset
 ```
 
 <a name="test"></a>
-## Test
+### Test
 
 Coverage report can be found in `./coverage` folder.
 
@@ -171,7 +175,7 @@ npm test
 ```
 
 <a name="build"></a>
-## Build
+### Build
 
 The source code is written in ES2015, hence before NodeJS fully support ES2015, we need to build the code to `es2015-node` using [Babel][babel-link].
 
@@ -182,7 +186,7 @@ npm run build
 ```
 
 <a name="generate-jsdoc-documentation"></a>
-## Generate JSDoc Documentation
+### Generate JSDoc Documentation
 
 ```bash
 # generate the documentation
@@ -195,7 +199,7 @@ npm run serve-doc
 ```
 
 <a name="release"></a>
-## Release
+### Release
 
 Shorthand script to generate release content, including `./coverage`, `./jsdoc` and `./dist`.
 
