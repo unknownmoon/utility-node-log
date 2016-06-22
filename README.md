@@ -36,6 +36,8 @@ __Table of Contents__
 
 <!-- MarkdownTOC -->
 
+- [Installation](#installation)
+    - [Install from GitHub Repository](#install-from-github-repository)
 - [Basic Module Usages](#basic-module-usages)
     - [Set log level programmatically](#set-log-level-programmatically)
     - [Set time format programmatically](#set-time-format-programmatically)
@@ -51,6 +53,20 @@ __Table of Contents__
     - [Release](#release)
 
 <!-- /MarkdownTOC -->
+
+<a name="installation"></a>
+## Installation
+
+<a name="install-from-github-repository"></a>
+### Install from GitHub Repository
+
+```bash
+# command format
+npm install --save github:unknownmoon/utility-node-log#<version>
+
+# example
+npm i -S github:unknownmoon/utility-node-log#v0.0.4
+```
 
 <a name="basic-module-usages"></a>
 ## Basic Module Usages
