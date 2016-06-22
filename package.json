@@ -1,6 +1,6 @@
 {
   "name": "utility-node-log",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Log utility used in NodeJS environment.",
   "main": "dist/es2015-node/index.js",
   "scripts": {
