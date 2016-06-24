@@ -9,7 +9,7 @@
 | Master | Develop |
 | ------ | ------- |
 | [![Build Status Master](https://travis-ci.org/unknownmoon/utility-node-log.svg?branch=master)](https://travis-ci.org/unknownmoon/utility-node-log) | [![Build Status Develop](https://travis-ci.org/unknownmoon/utility-node-log.svg?branch=develop)](https://travis-ci.org/unknownmoon/utility-node-log) |
-| [![Coverage Status](https://coveralls.io/repos/github/unknownmoon/utility-node-log/badge.svg?branch=master)](https://coveralls.io/github/unknownmoon/utility-node-log?branch=master) | [![Coverage Status](https://coveralls.io/repos/github/unknownmoon/utility-node-log/badge.svg?branch=develop)](https://coveralls.io/github/unknownmoon/utility-node-log?branch=develop) |
+| [![codecov](https://codecov.io/gh/unknownmoon/utility-node-log/branch/master/graph/badge.svg)](https://codecov.io/gh/unknownmoon/utility-node-log) | [![codecov](https://codecov.io/gh/unknownmoon/utility-node-log/branch/develop/graph/badge.svg)](https://codecov.io/gh/unknownmoon/utility-node-log) |
 
 Log utility used in NodeJS environment.
 
